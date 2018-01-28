@@ -56,6 +56,7 @@ final class Volume private (val value: Double, val unit: VolumeUnit)
   def cubeRoot = Meters(math.cbrt(toCubicMeters))
 
   def toCubicMeters = to(CubicMeters)
+  def toCubicCentimeters = to(CubicCentimeters)
   def toLitres = to(Litres)
   def toNanolitres = to(Nanolitres)
   def toMicrolitres = to(Microlitres)
@@ -96,7 +97,7 @@ object Volume extends Dimension[Volume] {
   def name = "Volume"
   def primaryUnit = CubicMeters
   def siUnit = CubicMeters
-  def units = Set(CubicMeters, Litres, Nanolitres, Microlitres, Millilitres, Centilitres,
+  def units = Set(CubicMeters, CubicCentimeters, Litres, Nanolitres, Microlitres, Millilitres, Centilitres,
     Decilitres, Hectolitres,
     CubicUsMiles, CubicYards, CubicFeet, CubicInches,
     UsGallons, UsQuarts, UsPints, UsCups, FluidOunces, Tablespoons, Teaspoons,
@@ -109,6 +110,11 @@ trait VolumeUnit extends UnitOfMeasure[Volume] with UnitConverter {
 
 object CubicMeters extends VolumeUnit with PrimaryUnit with SiUnit {
   val symbol = "m³"
+}
+
+object CubicCentimeters extends VolumeUnit {
+  val symbol = "cm³"
+  val conversionFactor = Litres.conversionFactor * MetricSystem.Centi
 }
 
 object Litres extends VolumeUnit {
@@ -248,6 +254,7 @@ object AcreFeet extends VolumeUnit {
 
 object VolumeConversions {
   lazy val cubicMeter = CubicMeters(1)
+  lazy val cubicCentimeters = CubicCentimeters(1)
   lazy val litre = Litres(1)
   lazy val liter = Litres(1)
   lazy val nanolitre = Nanolitres(1)
@@ -281,6 +288,7 @@ object VolumeConversions {
 
   implicit class VolumeConversions[A](n: A)(implicit num: Numeric[A]) {
     def cubicMeters = CubicMeters(n)
+    def cubicCentimeters = CubicCentimeters(n)
     def cubicMetres = CubicMeters(n)
     def litres = Litres(n)
     def liters = Litres(n)
