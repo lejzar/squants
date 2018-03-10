@@ -28,6 +28,8 @@ final class VolumeFlow private (val value: Double, val unit: VolumeFlowRateUnit)
   protected[squants] def time = Seconds(1)
 
   def toCubicMetersPerSecond = to(CubicMetersPerSecond)
+  def toLitersPerSecond = to(LitersPerSecond)
+  def toCubicFeetPerMinute = to(CubicFeetPerMinute)
   def toCubicFeetPerHour = to(CubicFeetPerHour)
   def toGallonsPerDay = to(GallonsPerDay)
   def toGallonsPerHour = to(GallonsPerHour)
@@ -41,7 +43,7 @@ object VolumeFlow extends Dimension[VolumeFlow] {
   def name = "VolumeFlow"
   def primaryUnit = CubicMetersPerSecond
   def siUnit = CubicMetersPerSecond
-  def units = Set(CubicMetersPerSecond, CubicFeetPerHour, GallonsPerDay, GallonsPerHour, GallonsPerMinute, GallonsPerSecond)
+  def units = Set(CubicMetersPerSecond, LitersPerSecond, CubicFeetPerHour, CubicFeetPerMinute, GallonsPerDay, GallonsPerHour, GallonsPerMinute, GallonsPerSecond)
 }
 
 trait VolumeFlowRateUnit extends UnitOfMeasure[VolumeFlow] with UnitConverter {
@@ -50,6 +52,16 @@ trait VolumeFlowRateUnit extends UnitOfMeasure[VolumeFlow] with UnitConverter {
 
 object CubicMetersPerSecond extends VolumeFlowRateUnit with PrimaryUnit with SiUnit {
   val symbol = "m³/s"
+}
+
+object LitersPerSecond extends VolumeFlowRateUnit {
+  val symbol = "l/s"
+  val conversionFactor = 0.001
+}
+
+object CubicFeetPerMinute extends VolumeFlowRateUnit {
+  val symbol = "CFM"
+  val conversionFactor = (CubicMeters.conversionFactor * CubicFeet.conversionFactor) / Time.SecondsPerMinute
 }
 
 object CubicFeetPerHour extends VolumeFlowRateUnit {
@@ -79,7 +91,9 @@ object GallonsPerSecond extends VolumeFlowRateUnit {
 
 object VolumeFlowConversions {
   lazy val cubicMeterPerSecond = CubicMetersPerSecond(1)
+  lazy val litersPerSecond = LitersPerSecond(1)
   lazy val cubicFeetPerHour = CubicFeetPerHour(1)
+  lazy val cubicFeetPerMinute = CubicFeetPerMinute(1)
   lazy val gallonPerDay = GallonsPerDay(1)
   lazy val gallonPerHour = GallonsPerHour(1)
   lazy val gallonPerMinute = GallonsPerMinute(1)
@@ -87,7 +101,9 @@ object VolumeFlowConversions {
 
   implicit class VolumeFlowConversions[A](n: A)(implicit num: Numeric[A]) {
     def cubicMetersPerSecond = CubicMetersPerSecond(n)
+    def litersPerSecond = LitersPerSecond(n)
     def cubicFeetPerHour = CubicFeetPerHour(n)
+    def cubicFeetPerMinute = CubicFeetPerMinute(n)
     def gallonsPerDay = GallonsPerDay(n)
     def gallonsPerHour = GallonsPerHour(n)
     def gallonsPerMinute = GallonsPerMinute(n)
