@@ -114,7 +114,7 @@ object CubicMeters extends VolumeUnit with PrimaryUnit with SiUnit {
 
 object CubicCentimeters extends VolumeUnit {
   val symbol = "cm³"
-  val conversionFactor = Litres.conversionFactor * MetricSystem.Centi
+  val conversionFactor = Litres.conversionFactor * MetricSystem.Milli
 }
 
 object Litres extends VolumeUnit {
