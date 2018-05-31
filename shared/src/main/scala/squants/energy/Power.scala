@@ -53,6 +53,8 @@ final class Power private (val value: Double, val unit: PowerUnit)
   def toBtusPerHour = to(BtusPerHour)
   def toErgsPerSecond = to(ErgsPerSecond)
   def toSolarLuminosities = to(SolarLuminosities)
+  def toSAEHorsepower = to(SAEHorsepower)
+  def toDINHorsepower = to(DINHorsepower)
 }
 
 /**
@@ -66,7 +68,7 @@ object Power extends Dimension[Power] {
   def name = "Power"
   def primaryUnit = Watts
   def siUnit = Watts
-  def units = Set(Watts, Milliwatts, Kilowatts, Megawatts, Gigawatts, BtusPerHour, ErgsPerSecond, SolarLuminosities)
+  def units = Set(Watts, Milliwatts, Kilowatts, Megawatts, Gigawatts, BtusPerHour, ErgsPerSecond, SolarLuminosities, SAEHorsepower, DINHorsepower)
 }
 
 trait PowerUnit extends UnitOfMeasure[Power] with UnitConverter {
@@ -110,6 +112,16 @@ object ErgsPerSecond extends PowerUnit {
 object SolarLuminosities extends PowerUnit {
   val conversionFactor = 3.828e26
   val symbol = "L☉"
+}
+
+object SAEHorsepower extends PowerUnit with SiUnit {
+  val conversionFactor = 0.001341022
+  val symbol = "Hp (SAE)"
+}
+
+object DINHorsepower extends PowerUnit with SiUnit {
+  val conversionFactor = 0.001359622
+  val symbol = "Hp (DIN)"
 }
 
 object PowerConversions {
