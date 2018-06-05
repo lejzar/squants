@@ -115,12 +115,12 @@ object SolarLuminosities extends PowerUnit {
 }
 
 object SAEHorsepower extends PowerUnit with SiUnit {
-  val conversionFactor = 0.001341022
+  val conversionFactor = 745.699921403
   val symbol = "Hp SAE"
 }
 
 object DINHorsepower extends PowerUnit with SiUnit {
-  val conversionFactor = 0.001359622
+  val conversionFactor = 735.498542977
   val symbol = "Hp DIN"
 }
 
