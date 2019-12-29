@@ -10,22 +10,16 @@ object Versions {
   val Squants = "1.6.0-lazer"
   val Scala = "2.11.12" // Don't use 2.12 yet to avoid troubles with native
   val scalaJSVersion =
-    Option(System.getenv("SCALAJS_VERSION")).getOrElse("0.6.29")
+    Option(System.getenv("SCALAJS_VERSION")).getOrElse("0.6.31")
   val ScalaCross =
-    if (scalaJSVersion.startsWith("0.6")) {
-      Seq("2.10.7", "2.11.12", "2.12.9")
-    } else {
-      Seq("2.11.12", "2.12.9", "2.13.1")
-    }
+    Seq("2.11.12", "2.12.10", "2.13.1")
 
-  val ScalaTest = "3.1.0-M2"
-  val ScalaTestOld = "3.0.7"
-  val ScalaCheck = "1.14.1"
+  val ScalaTest = "3.1.0"
+  val ScalaCheck = "1.14.3"
   val Json4s = "3.6.7"
 }
 
 object Dependencies {
-  val scalaTestOld = Def.setting(Seq("org.scalatest" %%% "scalatest" % Versions.ScalaTestOld % Test))
   val scalaTest = Def.setting(Seq("org.scalatest" %%% "scalatest" % Versions.ScalaTest % Test))
   val scalaCheck = Def.setting(Seq("org.scalacheck" %%% "scalacheck" % Versions.ScalaCheck % Test))
   val json4s = Def.setting(Seq("org.json4s" %% "json4s-native" % Versions.Json4s % Test))
@@ -78,7 +72,7 @@ object Compiler {
     "-Xfatal-warnings",
     "-unchecked",
     "-Xfuture",
-    "-Ywarn-dead-code",
+    "-Ywarn-dead-code"
   )
 
   lazy val defaultSettings = Seq(
@@ -88,7 +82,8 @@ object Compiler {
       "-encoding", "UTF-8",
     ),
     scalacOptions := {CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, scalaMajor)) if scalaMajor >= 11 => scalacOptions.value ++ defaultCompilerSwitches ++ newerCompilerLintSwitches
+      case Some((2, scalaMajor)) if scalaMajor >= 13 => scalacOptions.value ++ defaultCompilerSwitches ++ newerCompilerLintSwitches
+      case Some((2, scalaMajor)) if scalaMajor >= 11 => scalacOptions.value ++ defaultCompilerSwitches ++ newerCompilerLintSwitches :+ "-Ywarn-unused-import"
       case _ => scalacOptions.value ++ defaultCompilerSwitches
     }},
 
@@ -131,12 +126,14 @@ object Publish {
 
 object Tests {
   val defaultSettings =
-      Seq(
-        libraryDependencies ++=
-          Dependencies.scalaTest.value ++
-          Dependencies.scalaCheck.value ++
-          Dependencies.json4s.value
-      )
+      if (Versions.scalaJSVersion.startsWith("0.6")) {
+        Seq(
+          libraryDependencies ++=
+            Dependencies.scalaTest.value ++
+            Dependencies.scalaCheck.value ++
+            Dependencies.json4s.value
+        )
+      } else Seq.empty
 }
 
 object Formatting {
