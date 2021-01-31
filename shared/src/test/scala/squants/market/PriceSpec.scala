@@ -8,15 +8,16 @@
 
 package squants.market
 
-import org.scalatest.{ Matchers, FlatSpec }
 import squants.space.{ Yards, Meters }
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 /**
  * @author  garyKeorkunian
  * @since   0.1
  *
  */
-class PriceSpec extends FlatSpec with Matchers {
+class PriceSpec extends AnyFlatSpec with Matchers {
 
   behavior of "Price and its Units of Measure"
 
@@ -134,6 +135,6 @@ class PriceSpec extends FlatSpec with Matchers {
   it should "return a properly formatted string converted to different currency and/or unit with a valid MoneyContext" in {
     implicit val moneyContext = MoneyContext(USD, defaultCurrencySet, Seq(USD(1) toThe JPY(100)))
     val p = Price(USD(10), Meters(1))
-    p toString (JPY, Yards) should be(p.money.in(JPY).toString + "/" + p.quantity.toString(Yards))
+    p.toString(JPY, Yards) should be(p.money.in(JPY).toString + "/" + p.quantity.toString(Yards))
   }
 }
