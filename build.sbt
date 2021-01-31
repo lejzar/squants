@@ -12,6 +12,8 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 ThisBuild / turbo := true
 
+ThisBuild / version      := "1.6.0-lazer"
+
 val customScalaJSVersion = Option(System.getenv("SCALAJS_VERSION"))
 
 inThisBuild(List(
